@@ -1,7 +1,7 @@
 import time
 import paho.mqtt.client as mqtt
 import pytest
-from simplemqtt.types import QualityOfService as QoS
+from jmqtt.types import QualityOfService as QoS
 
 
 @pytest.mark.parametrize("qos", [QoS.AtMostOnce, QoS.AtLeastOnce])
@@ -23,7 +23,6 @@ def test_roundtrip_publish_subscribe(connection, unique_topic, msg_queue, qos):
 
     received_qos = msg_queue.get(timeout=5)
     assert received_qos == int(qos)
-
 
 
 def test_retain_flag(connection, unique_topic, msg_queue):

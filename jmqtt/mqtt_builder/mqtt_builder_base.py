@@ -10,6 +10,7 @@ from ..setup_logging import get_logger
 from ..types import QualityOfService as QoS
 from ..mqtt_config import MQTTConfig
 from ..mqtt_connections import MQTTConnectionV3, MQTTConnectionV5
+from .. import client_identity
 
 
 C = TypeVar("C", MQTTConnectionV3, MQTTConnectionV5)
@@ -17,11 +18,50 @@ logger = get_logger("MqttBuilder")
 
 
 class MqttBuilder(Generic[C]):
-    def __init__(self, client_id: str, host: str, connector: Type[C]):
-        self._config = MQTTConfig(client_id, host)
+    def __init__(self, host: str, app_name: str, connector: Type[C]):
+        """
+        Initialize an MQTT builder with the minimal required identity information.
+
+        `app_name` must be stable per tool/service and is part of the generated
+        client ID. Format validation happens once during `build()`.
+
+        Final client ID is always generated automatically:
+        - `device_fingerprint + app_name + instance_id` if instance is set
+        - `device_fingerprint + app_name` if no instance is set
+
+        If you expect multiple instances of the same tool to connect to the same
+        broker, set `instance_id(...)` explicitly right after constructor usage.
+
+        :param host: Broker hostname or IPv4/IPv6 literal.
+        :param app_name: Stable application name used for deterministic client IDs.
+        :param connector: Connection wrapper type (v3 or v5).
+        """
+        serial_number, connections = client_identity.facts.collect_device_facts()
+        self._config = MQTTConfig(host, app_name, serial_number, connections)
         self._config.protocol = mqtt.MQTTv311 if connector is MQTTConnectionV3 else mqtt.MQTTv5
 
         self._connection: Type[C] = connector()
+
+    def instance_id(self, id: str) -> MqttBuilder[C]:
+        """
+        Set an explicit instance ID to separate parallel app instances.
+
+        Use this when the same `app_name` can run more than once against the same
+        broker (for example multiple deployments or repeated local runs).
+        Different instance IDs produce different client IDs and avoid broker
+        disconnects caused by duplicate client identifiers.
+
+        Recommendation for library authors:
+        expose this through config/env/CLI so end users can set the instance
+        without changing code. If your wrapper already knows the instance at
+        startup, you can apply this immediately after constructor creation.
+
+        :param id: Instance identifier used for client-id composition.
+                   Format validation happens once during `build()`.
+        :return: MqttBuilder
+        """
+        self._config.instance_id = id
+        return self
 
     def persistent_session(self, persistent_session: bool = True) -> MqttBuilder[C]:
         """
@@ -163,9 +203,19 @@ class MqttBuilder(Generic[C]):
         """
         Create the client and apply configuration.
 
+        The builder always generates the MQTT client ID from device facts plus
+        app identity. It is intentionally not accepted via constructor or kwargs.
+
         :param additional_client_params: Extra kwargs forwarded to paho.Client(...), e.g. transport="websockets".
         :return: MQTTConnectionV3 or MQTTConnectionV5 wrapper depending on protocol.
         """
+        self._config.client_id = client_identity.client_id.build_auto_client_id(
+            self._config.app_name,
+            self._config.instance_id,
+            serial_number=self._config.serial_number,
+            connections=self._config.connections,
+        )
+
         if self._config.protocol != mqtt.MQTTv5:
             additional_client_params["clean_session"] = self._config.clean_session
 

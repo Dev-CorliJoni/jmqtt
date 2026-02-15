@@ -1,6 +1,6 @@
 import os
 import pytest
-from simplemqtt.types import QualityOfService as QoS
+from jmqtt.types import QualityOfService as QoS
 
 
 def test_build_minimal(mqtt_builder):

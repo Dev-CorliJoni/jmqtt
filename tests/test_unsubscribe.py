@@ -1,6 +1,6 @@
 import time
 import pytest
-from simplemqtt.types import QualityOfService as QoS
+from jmqtt.types import QualityOfService as QoS
 
 
 def test_unsubscribe_stops_delivery(connection, unique_topic, msg_queue, topic_registry):

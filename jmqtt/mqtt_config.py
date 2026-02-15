@@ -2,8 +2,13 @@ import paho.mqtt.client as mqtt
 
 
 class MQTTConfig:
-    def __init__(self, client_id, host):
-        self.client_id = client_id
+    def __init__(self, host, app_name, serial_number=None, connections=None):
+        self.client_id = None
+        self.app_name = app_name
+        self.instance_id = None
+        self.serial_number = serial_number
+        self.connections = connections if connections is not None else []
+
         self.protocol = mqtt.MQTTv311
         self.clean_session = True
 

@@ -1,5 +1,5 @@
 [project]
-name = "simple-mqtt"
+name = "jmqtt"
 description = "Framework for building easy MQTT applications"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.8"
@@ -25,22 +25,22 @@ classifiers = [
 dynamic = ["version","dependencies"]
 
 [project.urls]
-GitHub = "https://github.com/Dev-CorliJoni/simple-mqtt"
-Source   = "https://github.com/Dev-CorliJoni/simple-mqtt"
-Issues   = "https://github.com/Dev-CorliJoni/simple-mqtt/issues"
+GitHub = "https://github.com/Dev-CorliJoni/jmqtt"
+Source   = "https://github.com/Dev-CorliJoni/jmqtt"
+Issues   = "https://github.com/Dev-CorliJoni/jmqtt/issues"
 Instagram  = "https://www.instagram.com/dev.corlijoni/"
 
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["simplemqtt*"]
+include = ["jmqtt*"]
 exclude = ["tests*"]
 
 [tool.setuptools.package-data]
-simplemqtt = ["py.typed"]
+jmqtt = ["py.typed"]
 
 [tool.setuptools.dynamic]
-version = { attr = "simplemqtt.__version__" }
+version = { attr = "jmqtt.__version__" }
 dependencies = { file = "requirements.txt" }
 
 [build-system]

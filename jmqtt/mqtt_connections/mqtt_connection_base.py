@@ -4,9 +4,9 @@ import paho.mqtt.client as mqtt
 from paho.mqtt.properties import Properties
 from typing import Callable, Any, Dict, Optional
 
-from simplemqtt import MQTTMessage
-from simplemqtt.setup_logging import get_logger
-from simplemqtt.types import QualityOfService as QoS
+from jmqtt import MQTTMessage
+from jmqtt.setup_logging import get_logger
+from jmqtt.types import QualityOfService as QoS
 
 logger = get_logger("MqttConnectionBase")
 

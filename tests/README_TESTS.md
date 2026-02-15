@@ -3,7 +3,7 @@
 ## Required Environment Variables
 
 Required:
-- `MQTT_CLIENT_ID`  
+- `MQTT_APP_NAME`  
 - `MQTT_HOST`
 
 Optional:
@@ -15,7 +15,7 @@ Optional:
 - `MQTT_PERSISTENT_SESSION` (`1`/`true`...)
 - `MQTT_TLS_CA` or `MQTT_USE_TLS=1` -> enables TLS tests (skipped otherwise)
 - `MQTT_AVAILABILITY_TOPIC`
-- `MQTT_TEST_TOPIC` (base prefix for topics, otherwise `${CLIENT_ID}/tests`)
+- `MQTT_TEST_TOPIC` (base prefix for topics, otherwise `${APP_NAME}/tests`)
 - `MQTT_QOS` (default 1)
 - `MQTT_RETAIN` (default 0)
 
@@ -23,7 +23,7 @@ Optional:
 
 CLI:
 ```bash
-export MQTT_CLIENT_ID=demo-client
+export MQTT_APP_NAME=demo-client
 export MQTT_HOST=localhost
 pytest
 ```
@@ -35,7 +35,7 @@ pytest
 3) Set environment variables. Recommendation: create a `.env` in the root and enable "Load variables from ..." in the configuration. Example:
 
     ```
-    MQTT_CLIENT_ID=demo-client
+    MQTT_APP_NAME=demo-client
     MQTT_HOST=localhost
     MQTT_PORT=1883
     MQTT_KEEPALIVE=60

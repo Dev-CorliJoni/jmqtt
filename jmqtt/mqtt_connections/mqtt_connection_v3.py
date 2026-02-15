@@ -2,9 +2,9 @@ from __future__ import annotations
 from typing import Callable, Any
 
 from paho.mqtt.client import Client
-from simplemqtt import MQTTMessage
+from jmqtt import MQTTMessage
 
-from simplemqtt.types import QualityOfService as QoS
+from jmqtt.types import QualityOfService as QoS
 from .mqtt_connection_base import MqttConnectionBase
 
 

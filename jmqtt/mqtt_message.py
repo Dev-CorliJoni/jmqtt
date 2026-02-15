@@ -7,7 +7,7 @@ import re
 import paho.mqtt.client as mqtt
 from functools import cached_property
 from typing import Any, Optional, Union, Dict, Tuple
-from simplemqtt import QualityOfService as QoS
+from jmqtt import QualityOfService as QoS
 
 try:
     from PIL import Image  # type: ignore

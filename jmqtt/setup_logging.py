@@ -1,6 +1,6 @@
 import logging
 
-NAMESPACE = "simplemqtt"
+NAMESPACE = "jmqtt"
 logging.getLogger(NAMESPACE).addHandler(logging.NullHandler())
 
 
