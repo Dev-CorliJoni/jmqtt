@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List
 
 from .facts import Connection, CONN_MAC, CONN_BT, collect_device_facts
-from .hashing import build_deterministic_id
+from .hashing import build_compact_token
 from .validation import validate_client_id_component
 
 DEFAULT_MAX_CLIENT_ID_LENGTH = 23
@@ -75,7 +75,7 @@ def build_auto_client_id(
         seed = f"{seed}\x1f{instance_norm}"
 
     hash_length = min(12, max(8, max_length - 4))
-    suffix = build_deterministic_id(seed, length=hash_length, namespace="mqtt-client")
+    suffix = build_compact_token(seed, length=hash_length, namespace="mqtt-client")
 
     prefix_budget = max_length - len(suffix) - 1
     if prefix_budget <= 0:
