@@ -50,7 +50,7 @@ class MqttConnectionBase:
 
     @property
     def is_connected(self):
-        return self._client.is_connected
+        return self._client.is_connected()
 
     def connect(self, blocking: bool = False, **connection_parameters):
         """
