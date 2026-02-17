@@ -249,7 +249,12 @@ class MqttBuilder(Generic[C]):
             props.SessionExpiryInterval = 3600 if not self._config.clean_session else 0  # seconds
             connection_parameters["properties"] = props
 
-        self._connection.inject_client(client, connection_parameters, availability_topic)
+        self._connection.inject_client(
+            client,
+            connection_parameters,
+            availability_topic,
+            client_id=self._config.client_id,
+        )
         return self._connection
 
     def fast_build(self, **additional_client_params) -> C:

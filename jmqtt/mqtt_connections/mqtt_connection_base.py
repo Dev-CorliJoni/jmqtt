@@ -28,6 +28,7 @@ def invoke_callbacks(callbacks, callback_name, *args, **kwargs):
 class MqttConnectionBase:
     def __init__(self):
         self._client = None
+        self._client_id: str | None = None
         self._connection_parameters = None
         self._availability_topic = None
 
@@ -36,8 +37,15 @@ class MqttConnectionBase:
         self._before_disconnect_callbacks = []
         self._on_disconnect_callbacks = []
 
-    def inject_client(self, client: mqtt.Client, connection_parameters: dict, availability_topic: str | None) -> None:
+    def inject_client(
+            self,
+            client: mqtt.Client,
+            connection_parameters: dict,
+            availability_topic: str | None,
+            client_id: str | None = None,
+    ) -> None:
         self._client: mqtt.Client = client
+        self._client_id = client_id
         self._client.on_connect = self._on_connect
         self._client.on_disconnect = self._on_disconnect
         self._client.on_message = self._on_message_handler
@@ -47,6 +55,10 @@ class MqttConnectionBase:
     @property
     def availability_topic(self) -> str | None:
         return self._availability_topic
+
+    @property
+    def client_id(self) -> str | None:
+        return self._client_id
 
     @property
     def is_connected(self):

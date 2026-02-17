@@ -172,6 +172,9 @@ conn = MQTTBuilderV3("broker.example.org", "client-1").build()
 conn.connect()
 # or
 conn.connect(blocking=True)
+
+# Effective MQTT client identity used by this connection
+print(conn.client_id)
 ```
 
 ### Callbacks (V3)
