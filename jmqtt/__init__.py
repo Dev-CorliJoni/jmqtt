@@ -17,4 +17,4 @@ __all__ = [
     "MQTTMessage",
     "client_identity",
 ]
-__version__ = "1.0.2"
+__version__ = "1.0.3"
